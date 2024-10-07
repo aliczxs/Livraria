@@ -4,19 +4,17 @@ import './App.css';
 function App() {
     const [produtos, setProdutos] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null); // Estado para armazenar erros
 
     useEffect(() => {
         const fetchProdutos = async () => {
             try {
                 const response = await fetch('http://localhost:8080/produtos');
                 if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`); // Captura erros de status HTTP
+                    throw new Error(`HTTP error! status: ${response.status}`); // Para capturar erros de status HTTP
                 }
                 const data = await response.json();
                 setProdutos(data);
             } catch (error) {
-                setError(error.message); // Armazena a mensagem de erro no estado
                 console.error('Erro ao buscar produtos:', error.message);
             } finally {
                 setLoading(false);
@@ -49,8 +47,6 @@ function App() {
                 <div style={cardContainerStyle}>
                     {loading ? (
                         <p>Loading...</p>
-                    ) : error ? ( // Exibe mensagem de erro se houver
-                        <p style={{ color: 'red' }}>Erro ao carregar produtos: {error}</p>
                     ) : (
                         produtos.map(produto => (
                             <Card key={produto.id} title={produto.titulo} description={produto.descricao} />
